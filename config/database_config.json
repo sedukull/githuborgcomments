@@ -1,0 +1,8 @@
+{
+  "development": {
+      "url": "mongodb://localhost:27017/org-comments",
+      "pagination": {
+        "size": 100
+      }
+    }
+}
