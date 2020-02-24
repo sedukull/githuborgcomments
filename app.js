@@ -50,6 +50,7 @@ require('./app/routes/org.routes.js')(app);
 
 
 // listen for requests
-app.listen(servicePort, () => {
+var server = app.listen(servicePort, () => {
     log.info(`Service started. Port: ${servicePort}`);
 });
+module.exports = server;
