@@ -3,7 +3,7 @@ const app = require('../server')
 describe('Create comments', () => {
   it('should create a new comments', async () => {
     const res = await request(app)
-      .post('/orgs/alpha/comments')
+      .post('/orgs/xendit/comments')
       .send({
         comment: 'this is test comment'
       })
@@ -11,25 +11,25 @@ describe('Create comments', () => {
 
   })
 
-  it('should list the comments of alpha', async () => {
+  it('should list the comments of xendit', async () => {
     const res = await request(app)
-      .get('/orgs/alpha/comments')
+      .get('/orgs/xendit/comments')
     expect(res.statusCode).toEqual(200)
 
   })
 
-  it('should delete the comments of alpha', async () => {
+  it('should delete the comments of xendit', async () => {
     const res = await request(app)
-      .post('/orgs/alpha/comments')
+      .post('/orgs/xendit/comments')
       .send({
         comment: 'this is test comment'
       })
     const res1 = await request(app)
-      .delete('/orgs/alpha')
+      .delete('/orgs/xendit')
     expect(res1.statusCode).toEqual(200)
 
     const res2 = await request(app)
-      .get('/orgs/alpha/comments')
+      .get('/orgs/xendit/comments')
     expect(res2.body.length).toEqual(0)
   })
 })
