@@ -6,9 +6,7 @@ const dbConfig = require('./config/database_config')
 const appConfig = require('./config/app_config')
 require('dotenv').config()
 
-
 log.setDefaultLevel(log.levels.INFO);
-
 
 const environment = process.env.NODE_ENV || 'development';
 const servicePort = appConfig[environment].port;
