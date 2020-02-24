@@ -1,5 +1,5 @@
 const request = require('supertest')
-const app = require('../server')
+const app = require('../app')
 describe('Create comments', () => {
   it('should create a new comments', async () => {
     const res = await request(app)
