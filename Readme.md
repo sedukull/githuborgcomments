@@ -42,7 +42,8 @@
 
 ## prerequisites
 
-Mongodb has to be installed and configured: Ref database.config.json
+- Mongodb has to be installed and configured: Ref database.config.json
+- For github integration, token and flag to use the api key can be configured in app.config.json. Please check 'auth' section.
 
 ## Setup Information
 
