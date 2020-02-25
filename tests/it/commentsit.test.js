@@ -6,7 +6,7 @@ const app = require('../../app')
 describe('=== Org comments Integration test cases ===', () => {
 
   
-  it('should create a new comments', function(done) {
+  it('should create new comment against a valid org.', function(done) {
     request(app)
       .post('/orgs/xendit/comments')
       .send({
@@ -17,7 +17,7 @@ describe('=== Org comments Integration test cases ===', () => {
       })
   });
 
-  it('invalid comment', function(done) {
+  it('should fail for an invalid comment', function(done) {
     request(app)
       .post('/orgs/xendit/comments')
       .send({
@@ -29,7 +29,7 @@ describe('=== Org comments Integration test cases ===', () => {
   });
   
 
-  it('invalid org', function(done) {
+  it('should fail for an invalid org', function(done) {
     request(app)
       .post('/orgs/dummy/comments')
       .send({
