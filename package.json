@@ -4,21 +4,8 @@
   "description": "CRUD operations to deal with comments against github org. Persistence store for comments is mongodb.",
   "main": "app.js",
   "scripts": {
-    "test": "NODE_ENV=development jest",
-    "test-watch": "npm test -- --watch",
+    "test": "mocha 'tests/**/*.js' --timeout 10000",
     "start": "node app.js"
-  },
-  "jest": {
-    "verbose": true,
-    "notify": true,
-    "collectCoverage": true,
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "roots": [
-      "<rootDir>/__tests__"
-    ]
   },
   "keywords": [
     "Express",
@@ -39,9 +26,11 @@
     "util": "*"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "coveralls": "^3.0.6",
     "cross-env": "^5.2.0",
     "jest": "25.1.0",
+    "mocha": "^7.0.1",
     "nodemon": "^1.19.1",
     "supertest": "4.0.2"
   }

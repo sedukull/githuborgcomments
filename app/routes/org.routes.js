@@ -5,6 +5,9 @@ module.exports = (app) => {
     app.post('/orgs/:org/comments', orgs.create);
 
     // Retrieve all comments against the given org.
+    app.get('/orgs/:org/comments', orgs.findAll);
+
+    // Retrieve all comments against the given org.
     app.get('/orgs/:org/comments/:limit', orgs.findAll);
 
     // Delete(soft) comments for an org.

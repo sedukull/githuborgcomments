@@ -2,6 +2,8 @@ const OrgComment = require('../models/comment');
 const thirdPartyServices = require('.././modules/thirdpartyservices');
 const log = require('loglevel');
 const appConfig = require('../../config/app_config');
+const url = require('url');
+
 require('dotenv').config()
 
 const environment = process.env.NODE_ENV || 'development';
@@ -46,7 +48,7 @@ exports.create = async (req, res) => {
         });
     }
 
-    log.debug(`==== Org: ${orgName} isValid ===`); 
+    log.info(`==== Org: ${orgName} is available in github ===`); 
 
     // Create comment.
     const orgComment = new OrgComment({
@@ -55,11 +57,12 @@ exports.create = async (req, res) => {
         valid: true
     });
 
-
   // Save comment in the database.
   orgComment.save()
-    .then(data => {
-        res.send(data);
+    .then(
+        data => {
+        log.info("Comment saved to DB");
+        res.status(200).send(data);
     }).catch(err => {
         log.warn(`comment not saved. Org: ${orgName}`);
         res.status(500).send({
@@ -73,13 +76,21 @@ exports.findAll = (req, res) => {
   var limit = 0;
   var skip = 0;
 
+  var queryData = url.parse(req.url, true).query;
+
   if (req.params.limit) {
        limit = Number(req.params.limit);
   }
-  if (req.params.page) {
-      skip = Number(req.params.page);
+
+  if (queryData.limit) {
+      limit = Number(queryData.limit);
   }
-  log.info(`limit: ${limit}. page: ${req.params.page}.`);
+
+  if (queryData.page) {
+      skip = Number(queryData.skip);
+  }
+
+  log.info(`limit: ${limit}. page: ${skip}.`);
 
   OrgComment.find({'org': req.params.org, 'valid': true}).limit(limit).skip(skip * limit)
     .then(comments => {
@@ -94,19 +105,19 @@ exports.findAll = (req, res) => {
 
 // Delete (soft) comments for the specified org in the request.
 exports.delete = (req, res) => {
-  OrgComment.update({'org': req.params.org},{'valid': false},{'new': true, 'multi': true})
+  OrgComment.updateMany({'org': req.params.org},{'valid': false},{'new': true, 'multi': true})
     .then(comments => {
         res.send({message: "comments deleted successfully!"});
-      res.send(comments);
     }).catch(err => {
-        log.warn(`comments deletion failed. Org: ${req.params.org}`);
+        log.warn(`comments deletion failed. Org: ${req.params.org}`, err);
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
                 message: "comments not found with org " + req.params.org
             });                
-        }
-        return res.status(500).send({
+        } else {
+          return res.status(500).send({
             message: "Could not delete comments with org " + req.params.org
         });
+       }
     });
 };

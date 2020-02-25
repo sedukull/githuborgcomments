@@ -11,6 +11,17 @@ log.setDefaultLevel(log.levels.DEBUG);
 
 const environment = process.env.NODE_ENV || 'development';
 
+/**
+ * Adds the authorization token to the header.
+ */
+exports.addAuthHeader = (options) => {
+  var headers = options.headers;
+  if (appConfig[environment]['auth']['use_auth_token']) {
+    headers['Authorization'] = util.format('token %s', appConfig[environment]['auth']['token']);
+  }
+  options.headers = headers;
+  return options;
+};
 
 /**
  * Finds the github organization with a given name.
@@ -29,12 +40,12 @@ exports.findOrg = async (orgName) => {
       },
       timeout: timeOut
     };
+
+    options = this.addAuthHeader(options);
+
     return httpLibrary(options)
     .then(res => {
-            if (res.status === 200) {
-                return res.data.name;
-            }
-            return "";
-        })
-    .catch(err => {log.error(err); return "";});
+        log.info("===== org name ====", res.data.name);
+        return res.data.name;
+    }).catch(err => {log.error(err); return ""});
 }

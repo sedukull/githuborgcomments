@@ -3,6 +3,10 @@
       "port":3000,
       "time_out": 1000,
       "github_base_url": "Https://api.github.com",
-      "request_validation": true
+      "request_validation": true,
+      "auth":{
+        "use_auth_token": true,
+        "token": "5edc1636f3249e2b29a5020e016b7c02fb533c7f"
+      }
     }
 }
