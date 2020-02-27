@@ -43,9 +43,18 @@ exports.findOrg = async (orgName) => {
 
     options = this.addAuthHeader(options);
 
-    return httpLibrary(options)
-    .then(res => {
-        log.info("===== org name ====", res.data.name);
-        return res.data.name;
-    }).catch(err => {log.error(err); return ""});
+    try {
+      var res = await this.callExternalUrl(options);
+      return res.name;
+    } catch (err) {
+      return "";   
+    }
 }
+
+/**
+ * Makes an external call. EX: To github with given url and option parameters.
+ */
+exports.callExternalUrl = async (options) => {
+  log.debug(options.url)
+  return httpLibrary(options).then(res => { return res.data }).catch(err => {log.error(err); throw err;});
+};

@@ -51,14 +51,14 @@ exports.create = async (req, res) => {
     log.info(`==== Org: ${orgName} is available in github ===`); 
 
     // Create comment.
-    const orgComment = new OrgComment({
+    this.orgComment = new OrgComment({
         org: req.params.org,
         comment: req.body.comment,
         valid: true
     });
 
-  // Save comment in the database.
-  orgComment.save()
+   // Save comment in the database.
+   this.orgComment.save()
     .then(
         data => {
         log.info("Comment saved to DB");
