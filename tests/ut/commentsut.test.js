@@ -18,9 +18,7 @@ OrgCommentMock.prototype.save = function (data) {};
 OrgCommentMock.prototype.find = function (data) {};
 OrgCommentMock.prototype.updateMany = function () {};
 
-var mockResponse = mockHttpReq.createResponse();
-
-describe('=== org comments test', () => {
+describe('=== org comments test ===', () => {
 
     beforeEach(function () {
         sandbox = sinon.createSandbox();
@@ -32,6 +30,7 @@ describe('=== org comments test', () => {
 
     it('invalid org name test', async() =>  {
         sandbox.stub(thirdpartyServices, 'findOrg').returns('xendit');
+        var mockResponse = mockHttpReq.createResponse();
         var res = await orgController.create(mockRequest(''), mockResponse);
         expect(res.statusCode).to.equal(400);
     });
@@ -39,6 +38,8 @@ describe('=== org comments test', () => {
     it('orgname passed correct', async() =>  {   
         var findOrgStub = sandbox.stub(thirdpartyServices, 'findOrg').returns('xendit');
         var orgControllerSpy = sandbox.spy(orgController, 'create');
+        var mockResponse = mockHttpReq.createResponse();
+
         OrgCommentMock.prototype.save = function() {
             return mockResponse;
         }
@@ -53,6 +54,7 @@ describe('=== org comments test', () => {
 
     it('invalid body test', async() =>  {
         sandbox.stub(thirdpartyServices, 'findOrg').returns('xendit');
+        var mockResponse = mockHttpReq.createResponse();
         var res = await orgController.create(mockRequest('xendit', ''), mockResponse);
         expect(res.statusCode).to.equal(400);
     });
@@ -60,6 +62,7 @@ describe('=== org comments test', () => {
     it('valid body test for save comment', async() =>  {
         sandbox.stub(thirdpartyServices, 'findOrg').returns('xendit');
         var orgControllerSpy = sandbox.spy(orgController, 'create');
+        var mockResponse = mockHttpReq.createResponse();
         OrgCommentMock.prototype.save = function(data) {
             mockResponse.send = data;
             return mockResponse;
@@ -68,6 +71,6 @@ describe('=== org comments test', () => {
         var res = await orgControllerSpy(mockRequest('xendit', {
             'comment': 'abc'
         }), mockResponse);
-        expect(mockResponse.statusCode).to.equal(400);
+        expect(mockResponse.statusCode).to.equal(200);
     });
 })
